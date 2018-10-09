@@ -14,10 +14,15 @@ namespace _7LibraryXML
     // Assignement: Library XML Project
     // File:        7LibraryXML
 
+        /// <summary>
+        /// here begins the form for library controls
+        /// </summary>
     public partial class LibraryControl : Form
     {
         XmlDocument doc = new XmlDocument();
-         
+        static int selected; 
+        static int numCop;
+        static int numOut;
 
         public LibraryControl()
         {
@@ -122,6 +127,10 @@ namespace _7LibraryXML
             label7.Visible = false;
             btnCheckOut.Visible = false;
             btnReturn.Visible = false;
+            lblFalse.Visible = false;
+            txtBxInfo.Visible = false;
+            btnAcceptRtrn.Visible = false;
+            btnAcceptRtrn.Enabled = false;
             #endregion -- hide --
 
         } // end of LibraryControl_Load
@@ -137,6 +146,8 @@ namespace _7LibraryXML
         {
             btnAccept.Visible = false;
             btnAccept.Enabled = false;
+            btnAcceptRtrn.Visible = false;
+            btnAcceptRtrn.Enabled = false;
 
             lstBxInventory.Items.Clear();
             doc.Load("books.xml");
@@ -195,6 +206,7 @@ namespace _7LibraryXML
             //} // end of while
             #endregion -- unused failed --
 
+            doc.Save("books.xml");
         } // end of lstBxSearch_SelectedIndexChanged
         #endregion -- end of lstBxSearch --
 
@@ -209,8 +221,13 @@ namespace _7LibraryXML
         {
             btnAccept.Visible = false;
             btnAccept.Enabled = false;
+            btnAcceptRtrn.Visible = false;
+            btnAcceptRtrn.Enabled = false;
+            lblFalse.Visible = false;
+            txtBxInfo.Visible = false;
             lstBxBook.Items.Clear();    // clears the lstbxbook        
             lstBxBook.Visible = true;   // makes lstbxbook visible
+
             doc.Load("books.xml");      // loads the xml file
 
             // shows the labels for context of lstBxBook
@@ -245,7 +262,7 @@ namespace _7LibraryXML
                 lstBxBook.Items.Add(numcop.InnerText);
                 XmlNode numout = doc.SelectSingleNode("books/book[1]/copiesout");
                 lstBxBook.Items.Add(numout.InnerText);
-
+                selected = 1;
             } // end of if
 
             if (lstBxInventory.SelectedIndex == 1)
@@ -264,7 +281,7 @@ namespace _7LibraryXML
                 lstBxBook.Items.Add(numcop.InnerText);
                 XmlNode numout = doc.SelectSingleNode("books/book[2]/copiesout");
                 lstBxBook.Items.Add(numout.InnerText);
-
+                selected = 2;
             } // end of if
 
             if (lstBxInventory.SelectedIndex == 2)
@@ -283,10 +300,8 @@ namespace _7LibraryXML
                 lstBxBook.Items.Add(numcop.InnerText);
                 XmlNode numout = doc.SelectSingleNode("books/book[3]/copiesout");
                 lstBxBook.Items.Add(numout.InnerText);
-
+                selected = 3;
             } // end of if
-
-
 
             if (lstBxInventory.SelectedIndex == 3)
             {
@@ -300,44 +315,144 @@ namespace _7LibraryXML
                 lstBxBook.Items.Add(isbn.InnerText);
                 XmlNode date = doc.SelectSingleNode("books/book[4]/date");
                 lstBxBook.Items.Add(date.InnerText);
-                XmlNode numcop = doc.SelectSingleNode("books/book/numcopies");
+                XmlNode numcop = doc.SelectSingleNode("books/book[4]/numcopies");
                 lstBxBook.Items.Add(numcop.InnerText);
                 XmlNode numout = doc.SelectSingleNode("books/book[4]/copiesout");
                 lstBxBook.Items.Add(numout.InnerText);
-
+                selected = 4;
             } // end of if
             #endregion -- populated --
 
+            doc.Save("books.xml");      // saves the file
 
         } // end of lstBxInventory SelectedIndexChanged
         #endregion -- controls --
 
-
+        /// <summary>
+        /// this will call the IsCopyAvail method to 
+        /// verify there are copies to check out
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnCheckOut_Click(object sender, EventArgs e)
         {
-
-            btnAccept.Visible = true;
-            btnAccept.Enabled = true;
+            doc.Load("books.xml");      // loads the file
+            XmlNode numcop = doc.SelectSingleNode("books/book[" + selected + "]/numcopies");
+            numCop = Int32.Parse(numcop.InnerText);
+            XmlNode numout = doc.SelectSingleNode("books/book[" + selected + "]/copiesout");
+            numOut = Int32.Parse(numout.InnerText);
+            // need to find the values for numcopies and copies out thru the reader
+            bool chkOut = Book.IsCopyAvailable(numCop, numOut);
+            // must use boolean for iscopyavailable
             // if book copiesout < numcopies then allow a check out process
             // and enable the btnaccept
+            if (chkOut == true)
+            {
+                btnAccept.Visible = true;
+                btnAccept.Enabled = true;
+                lblFalse.Visible = false;
+                txtBxInfo.Visible = true;
+                // test code
+                //lstBxInventory.Items.Clear();
+                //lstBxInventory.Text = "it worked";
 
-            // will need to read the xml and make an update to the xml file updating the 
-            // copiesout
+                // add code for messagebox saying you can check book out
+                txtBxInfo.Text = "Book available for check out";
 
-            // then need to close the xmlfile
+            } // end of if true
 
+            if (chkOut == false)
+            {
+                lblFalse.Visible = true;
+                txtBxInfo.Visible = true;
+                // add code for messagebox saying check out not possible
+                txtBxInfo.Text = "Book is NOT available for check out";
+            } // end of false
 
+            // if chkout possible now we go to the btnAccept
+
+            doc.Save("books.xml");          // saves the file
         } // end of btnCheckOut
 
+        /// <summary>
+        /// this checks to see if book needs to be 
+        /// returned by calling the rNeedReturn method from 
+        /// book class
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnReturn_Click(object sender, EventArgs e)
         {
-            btnAccept.Visible = true;
-            btnAccept.Enabled = true;
-            // if this is the bookj being returned
-            // must use reader to update the copiesout
-            
+            doc.Load("books.xml");          // loads the file
+            XmlNode numcop = doc.SelectSingleNode("books/book[" + selected + "]/numcopies");
+            numCop = Int32.Parse(numcop.InnerText);
+            XmlNode numout = doc.SelectSingleNode("books/book[" + selected + "]/copiesout");
+            numOut = Int32.Parse(numout.InnerText);
+            bool chkIn = Book.NeedReturn(numCop, numOut);
+            if (chkIn == true)
+            {
+                btnAcceptRtrn.Visible = true;
+                btnAcceptRtrn.Enabled = true;
+                txtBxInfo.Visible = true;
+                txtBxInfo.Text = "Book Eligible for Return";
+            } // EndInvoke of if for chkIn true
+
+            if (chkIn == false)
+            {
+                btnAccept.Visible = false;
+                btnAccept.Enabled = false;                
+                btnAcceptRtrn.Visible = false;
+                btnAcceptRtrn.Enabled = false;
+                txtBxInfo.Visible = true;
+                txtBxInfo.Text = " Book NOT Eligible for Return";
+            } // end of if chkIn false
+              // if this is the bookj being returned
+              // must be a copy that needs to be returned
+              // must use reader to update the copiesout
+
+            doc.Save("books.xml");          // // saves the file
         } // end of btnReturn
 
+        /// <summary>
+        ///  this should call the check out method
+        ///  and display message when done with due date
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnAccept_Click(object sender, EventArgs e)
+        {
+            txtBxInfo.Visible = false;
+            btnAcceptRtrn.Visible = false;
+            // need to call the check out method
+            // check out
+            Book.CheckOutBook(numCop, numOut, selected);
+            txtBxInfo.Visible = true;
+            txtBxInfo.Text = "Book successfully checked out\n" + "Due date is " + 
+                DateTime.Now.AddDays(14).ToString("dd.MM.yy");
+            btnAccept.Visible = false;
+            btnAccept.Enabled = false;
+            lblFalse.Visible = false;
+            btnAccept.Visible = false;
+            btnAccept.Enabled = false;
 
+        } // end of btnAccept
+
+        /// <summary>
+        /// this should call the return method
+        /// and display message when its done
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnAcceptRtrn_Click(object sender, EventArgs e)
+        {
+            txtBxInfo.Visible = false;
+            btnAccept.Visible = false;
+            btnAccept.Enabled = false;
+            Book.ReturnBook(numCop, numOut, selected);
+            txtBxInfo.Visible = true;
+            txtBxInfo.Text = "Book succesfully returned\nThank You";
+            btnAcceptRtrn.Visible = false;
+            btnAcceptRtrn.Enabled = false;
+        } // end of btnAcceptReturn
     } // end of partial class
 } // end of namespace
