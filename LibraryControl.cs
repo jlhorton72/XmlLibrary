@@ -125,12 +125,13 @@ namespace _7LibraryXML
             label5.Visible = false;
             label6.Visible = false;
             label7.Visible = false;
+            label8.Visible = false;
             btnCheckOut.Visible = false;
             btnReturn.Visible = false;
             lblFalse.Visible = false;
             txtBxInfo.Visible = false;
             btnAcceptRtrn.Visible = false;
-            btnAcceptRtrn.Enabled = false;
+            btnAcceptRtrn.Enabled = false;       
             #endregion -- hide --
 
         } // end of LibraryControl_Load
@@ -148,7 +149,7 @@ namespace _7LibraryXML
             btnAccept.Enabled = false;
             btnAcceptRtrn.Visible = false;
             btnAcceptRtrn.Enabled = false;
-
+            label8.Visible = true;
             lstBxInventory.Items.Clear();
             doc.Load("books.xml");
             lstBxInventory.Visible = true;
@@ -227,7 +228,7 @@ namespace _7LibraryXML
             txtBxInfo.Visible = false;
             lstBxBook.Items.Clear();    // clears the lstbxbook        
             lstBxBook.Visible = true;   // makes lstbxbook visible
-
+            label8.Visible = true;
             doc.Load("books.xml");      // loads the xml file
 
             // shows the labels for context of lstBxBook

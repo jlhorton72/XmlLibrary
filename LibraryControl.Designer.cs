@@ -43,6 +43,10 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.lblFalse = new System.Windows.Forms.Label();
+            this.txtBxInfo = new System.Windows.Forms.TextBox();
+            this.btnAcceptRtrn = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnCheckOut
@@ -98,12 +102,13 @@
             this.btnAccept.BackColor = System.Drawing.Color.Fuchsia;
             this.btnAccept.Font = new System.Drawing.Font("Times New Roman", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAccept.ForeColor = System.Drawing.Color.Blue;
-            this.btnAccept.Location = new System.Drawing.Point(418, 498);
+            this.btnAccept.Location = new System.Drawing.Point(280, 497);
             this.btnAccept.Name = "btnAccept";
             this.btnAccept.Size = new System.Drawing.Size(152, 46);
             this.btnAccept.TabIndex = 5;
-            this.btnAccept.Text = "Accept";
+            this.btnAccept.Text = "Check Out";
             this.btnAccept.UseVisualStyleBackColor = false;
+            this.btnAccept.Click += new System.EventHandler(this.btnAccept_Click);
             // 
             // lstBxBook
             // 
@@ -139,7 +144,7 @@
             "Author",
             "Subject",
             "ISBN"});
-            this.lstBxSearch.Location = new System.Drawing.Point(133, 67);
+            this.lstBxSearch.Location = new System.Drawing.Point(316, 30);
             this.lstBxSearch.Name = "lstBxSearch";
             this.lstBxSearch.Size = new System.Drawing.Size(147, 80);
             this.lstBxSearch.TabIndex = 8;
@@ -215,12 +220,61 @@
             this.label7.Text = "# Copies Out:";
             this.label7.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
+            // lblFalse
+            // 
+            this.lblFalse.AutoSize = true;
+            this.lblFalse.Location = new System.Drawing.Point(390, 409);
+            this.lblFalse.Name = "lblFalse";
+            this.lblFalse.Size = new System.Drawing.Size(204, 19);
+            this.lblFalse.TabIndex = 16;
+            this.lblFalse.Text = "Cannot Check Out At This Time";
+            // 
+            // txtBxInfo
+            // 
+            this.txtBxInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.txtBxInfo.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBxInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.txtBxInfo.Location = new System.Drawing.Point(535, 43);
+            this.txtBxInfo.Multiline = true;
+            this.txtBxInfo.Name = "txtBxInfo";
+            this.txtBxInfo.Size = new System.Drawing.Size(411, 65);
+            this.txtBxInfo.TabIndex = 17;
+            // 
+            // btnAcceptRtrn
+            // 
+            this.btnAcceptRtrn.BackColor = System.Drawing.Color.Fuchsia;
+            this.btnAcceptRtrn.Font = new System.Drawing.Font("Times New Roman", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAcceptRtrn.ForeColor = System.Drawing.Color.Blue;
+            this.btnAcceptRtrn.Location = new System.Drawing.Point(543, 497);
+            this.btnAcceptRtrn.Name = "btnAcceptRtrn";
+            this.btnAcceptRtrn.Size = new System.Drawing.Size(152, 46);
+            this.btnAcceptRtrn.TabIndex = 18;
+            this.btnAcceptRtrn.Text = "Return";
+            this.btnAcceptRtrn.UseVisualStyleBackColor = false;
+            this.btnAcceptRtrn.Click += new System.EventHandler(this.btnAcceptRtrn_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.label8.Font = new System.Drawing.Font("Times New Roman", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.Color.Blue;
+            this.label8.Location = new System.Drawing.Point(95, 123);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(161, 24);
+            this.label8.TabIndex = 19;
+            this.label8.Text = "Book Inventory :";
+            // 
             // LibraryControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.ClientSize = new System.Drawing.Size(999, 571);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.btnAcceptRtrn);
+            this.Controls.Add(this.txtBxInfo);
+            this.Controls.Add(this.lblFalse);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -264,6 +318,10 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lblFalse;
+        private System.Windows.Forms.TextBox txtBxInfo;
+        private System.Windows.Forms.Button btnAcceptRtrn;
+        private System.Windows.Forms.Label label8;
     }
 }
 
